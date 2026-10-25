@@ -1,0 +1,93 @@
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1c">
+<title>NOVA Remote</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: radial-gradient(circle at top, #173b70, #080d1c 65%);
+  display: grid;
+  place-items: center;
+  padding: 22px;
+}
+.panel {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  border: 1px solid #526d99;
+  border-radius: 24px;
+  background: #101a2dcc;
+  box-shadow: 0 20px 70px #0008;
+}
+h1 { text-align: center; letter-spacing: 3px; }
+p { color: #bdcbe4; text-align: center; line-height: 1.8; }
+button, input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 12px;
+  font-size: 16px;
+}
+input { background: #080d1c; color: white; border: 1px solid #526d99; }
+button {
+  border: 0;
+  color: white;
+  background: #246bdb;
+  cursor: pointer;
+}
+button:active { opacity: .8; }
+.note { font-size: 12px; color: #a8b8d5; }
+</style>
+</head>
+<body>
+<main class="panel">
+  <h1>NOVA REMOTE</h1>
+  <p>پنل آزمایشی کنترل از راه دور</p>
+
+  <input id="phone" type="tel" placeholder="شماره تلفن">
+
+  <button onclick="callPhone()">باز کردن شماره‌گیر</button>
+  <button onclick="playSound()">پخش صدای آزمایشی</button>
+
+  <p id="status" role="status">آماده به کار</p>
+  <p class="note">
+    این صفحه فقط قابلیت‌های خود مرورگر را اجرا می‌کند
+    و کنترل از راه دور گوشی در آن فعال نیست.
+  </p>
+</main>
+
+<script>
+function callPhone() {
+  const phone = document.getElementById("phone").value.trim();
+  if (!/^\+?[0-9\s()-]{3,20}$/.test(phone)) {
+    document.getElementById("status").textContent =
+      "لطفاً شماره تلفن معتبر وارد کن.";
+    return;
+  }
+  window.location.href = "tel:" + phone.replace(/[\s()-]/g, "");
+}
+function playSound() {
+  const audio = new AudioContext();
+  const oscillator = audio.createOscillator();
+  const gain = audio.createGain();
+  oscillator.connect(gain);
+  gain.connect(audio.destination);
+  oscillator.frequency.value = 660;
+  gain.gain.value = 0.15;
+  oscillator.start();
+  oscillator.stop(audio.currentTime + 0.4);
+  document.getElementById("status").textContent =
+    "صدای آزمایشی اجرا شد.";
+}
+</script>
+</body>
+</html>
+```
